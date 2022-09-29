@@ -1,4 +1,4 @@
-# gpd_grid_sq_lcd
+# gps_grid_sq_lcd
 
 uses I2C LCD like this one
 https://www.amazon.com/GeeekPi-Character-Backlight-Raspberry-Electrical/dp/B07S7PJYM6
@@ -15,7 +15,7 @@ out out on LCD is
  LCD will show "No Valid Fix"  until GPS module has valid fix data.
  
  sketch puts serial data at 9600 bps to serial montiro for more info
- *** in data fileds shpw no GPS fix
+ *** in data fields show no GPS fix
  
 GPS Grid Display
 Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum
@@ -24,6 +24,5 @@ Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Sp
 **** ***** ********** *********** **** ********** ******** **** ****** ****** ***** ***   63    0         0        
 6    3.9   32.990337  -84.217842  50   09/29/2022 16:01:00 179  241.90 350.06 0.87  N     729   2         0        
 EM72vx
-
 
 
