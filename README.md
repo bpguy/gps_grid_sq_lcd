@@ -18,7 +18,9 @@ out out on LCD is
  *** in data fields show no GPS fix
  
 GPS Grid Display
+
 Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum
+
           (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail
 
 
