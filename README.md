@@ -19,10 +19,10 @@ out out on LCD is
  
 GPS Grid Display
 Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum
+          (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail
 
 
-
-           (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail
+ 
 ------------------------------------------------------------------------------------------------------------------
 **** ***** ********** *********** **** ********** ******** **** ****** ****** ***** ***   63    0         0        
 6    3.9   32.990337  -84.217842  50   09/29/2022 16:01:00 179  241.90 350.06 0.87  N     729   2         0        
