@@ -1,3 +1,5 @@
+#include <LiquidCrystal.h>
+
 #include <SoftwareSerial.h>
 #include <LiquidCrystal_I2C.h>
 #include <TinyGPS++.h>
@@ -7,16 +9,16 @@ int RXPin = 2;
 int TXPin = 3;
 
 char A_Z[27] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", a_z[27] = "abcdefghijklmnopqrstuvwxyz", grid[7];  // Array of characters for the Grid Square function
-float lat, lon;  //  varialbe fot for latitude and longitude function
+float lat, lon;  //  variable for latitude and longitude function
 float LAT, LON;  // latitude and longitude values
-
+bool ClearLCD = false; //To remember if the LCD has been cleared -NX9O 2022 10 13
 
 //Default baud of NEO-6M is 9600
 int GPSBaud = 9600;
 TinyGPSPlus gps;
 
 // enter the I2C address and the dimensions of your LCD here
-#define LCD_ADDRESS 0x27
+#define LCD_ADDRESS 0x3F
 LiquidCrystal_I2C lcd(LCD_ADDRESS, 16, 2);  // LCD is 16 char x 2 lines
 
 
@@ -36,7 +38,7 @@ void setup() {
   lcd.clear();
   lcd.backlight();
   lcd.setCursor(0, 0);
-  lcd.print("GPS GRID");
+  lcd.print("GPS GRID SQUARE"); //Added the word SQUARE - NX9O 2022 10 13
   Serial.println("GPS Grid Display");
   delay(5000);
 
@@ -84,17 +86,36 @@ if (gps.location.isValid() )
   GridSquare(LAT, LON);  // Calulate the Grid Square
   Serial.println(grid);
 
-  lcd.setCursor(0, 0);
-  lcd.print(lat,3);
-  lcd.print(" ");
-  lcd.print(lon,3);
-  
-  lcd.setCursor(0, 1);
-  lcd.print("GRID            ");
-  lcd.setCursor(5, 1); 
+  // Blank the display if not already- NX9O 2022 10 13
+  if (!ClearLCD)
+  {
+    lcd.clear();
+    ClearLCD = true;
+    //lcd.setCursor(0, 1);
+    //lcd.print("Sat");
+  }
+
+  // Changed the order of LCD lines and removed the word "GRID" NX9O 2022 10 13
+  //lcd.setCursor(0, 0);
+  // lcd.print("GRID            ");
+  lcd.setCursor(0, 0); 
   lcd.print(grid);
-  lcd.setCursor(14, 1);
+  lcd.setCursor(0, 1);
   lcd.print(gps.satellites.value());
+
+  lcd.setCursor(7, 0);
+  lcd.print(lat,6);  // decimals was ,3 - NX9O 2022 10 13
+  if (lon < 100)  // Move lat over 1 character if 100 degrees or higher; later test for - and -100 - NX9O 2022 10 13
+  {
+    lcd.setCursor(5, 1);
+    lcd.print(" ");
+    lcd.setCursor(6, 1);
+    lcd.print(lon,6);
+  } else {
+    lcd.setCursor(5, 1);
+    lcd.print(lon,6);
+  }
+
   }
   else
   {
@@ -230,3 +251,5 @@ void GridSquare(float latitude,float longtitude)  // Calculate the Grid Square f
   return;
   
 }
+
+
