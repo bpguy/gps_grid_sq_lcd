@@ -1,4 +1,4 @@
-#include <LiquidCrystal.h>
+// #include <LiquidCrystal.h>
 
 #include <SoftwareSerial.h>
 #include <LiquidCrystal_I2C.h>
@@ -251,5 +251,3 @@ void GridSquare(float latitude,float longtitude)  // Calculate the Grid Square f
   return;
   
 }
-
-
