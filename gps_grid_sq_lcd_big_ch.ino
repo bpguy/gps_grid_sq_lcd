@@ -1,7 +1,10 @@
 // #include <LiquidCrystal.h>
+// https://coeleveld.com/bigfont/
 
 #include <SoftwareSerial.h>
 #include <LiquidCrystal_I2C.h>
+#include <BigFont01_I2C.h>
+
 #include <TinyGPS++.h>
 
 // Choose two Arduino pins to use for software serial to interface to GPS module
@@ -20,6 +23,7 @@ TinyGPSPlus gps;
 // enter the I2C address and the dimensions of your LCD here
 #define LCD_ADDRESS 0x27
 LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);  // LCD is 16 char x 2 lines
+BigFont01_I2C     big(&lcd); // construct large font object, passing to it the name of our lcd object
 
 
 // Create a software serial port called "gpsSerial"
@@ -35,13 +39,19 @@ void setup() {
   
   //set up LCD
   lcd.init();
+  big.begin();
   lcd.clear();
   lcd.backlight();
   lcd.setCursor(0, 0);
   lcd.print("GPS GRID SQUARE"); //Added the word SQUARE - NX9O 2022 10 13
   Serial.println("GPS Grid Display");
-  delay(5000);
+  lcd.setCursor(0,2);
+  lcd.print ("  BigFont01_I2C ");
+  lcd.setCursor(0,3);
+  lcd.print ("  ============= ");
 
+  delay(5000);
+  
   Serial.println(F("Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum"));
   Serial.println(F("           (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail"));
   Serial.println(F("------------------------------------------------------------------------------------------------------------------"));
@@ -94,32 +104,44 @@ if (gps.location.isValid() )
     //lcd.setCursor(0, 1);
     //lcd.print("Sat");
   }
-
+  lcd.clear();
+  big.writechar(0,0,grid[0]);  //3 wide
+  
+  big.writechar(0,5,grid[1]);  // 5 wide
+  
+  big.writechar(0,10,grid[2]);  // 3 wide
+  
+  big.writechar(0,15,grid[3]);  // 3 wide
+  
+  big.writechar(2,0,grid[4]); // 4 wide
+  
+  big.writechar(2,5,grid[5]);// 3 wide
   // Changed the order of LCD lines and removed the word "GRID" NX9O 2022 10 13
   //lcd.setCursor(0, 0);
   // lcd.print("GRID            ");
-  lcd.setCursor(0, 0); 
-  lcd.print(grid);
-  lcd.setCursor(0, 1);
-  lcd.print(gps.satellites.value());
+  // lcd.setCursor(0, 0); 
+  // lcd.print(grid);
+  // lcd.setCursor(0, 1);
+  // lcd.print(gps.satellites.value());
 
-  lcd.setCursor(7, 0);
-  lcd.print(lat,6);  // decimals was ,3 - NX9O 2022 10 13
-  if (lon < 100)  // Move lat over 1 character if 100 degrees or higher; later test for - and -100 - NX9O 2022 10 13
-  {
-    lcd.setCursor(5, 1);
-    lcd.print(" ");
-    lcd.setCursor(6, 1);
-    lcd.print(lon,6);
-  } else {
-    lcd.setCursor(5, 1);
-    lcd.print(lon,6);
-  }
+  // lcd.setCursor(7, 0);
+  // lcd.print(lat,6);  // decimals was ,3 - NX9O 2022 10 13
+  // if (lon < 100)  // Move lat over 1 character if 100 degrees or higher; later test for - and -100 - NX9O 2022 10 13
+  // {
+  //   lcd.setCursor(5, 1);
+  //   lcd.print(" ");
+  //   lcd.setCursor(6, 1);
+  //   lcd.print(lon,6);
+  // } else {
+  //   lcd.setCursor(5, 1);
+  //   lcd.print(lon,6);
+  // }
 
   }
   else
   {
   lcd.setCursor(0, 1);
+  lcd.clear();
   lcd.print("No Valid Fix    ");
   }
 
