@@ -19,7 +19,7 @@ TinyGPSPlus gps;
 
 // enter the I2C address and the dimensions of your LCD here
 #define LCD_ADDRESS 0x27
-LiquidCrystal_I2C lcd(LCD_ADDRESS, 16, 2);  // LCD is 16 char x 2 lines
+LiquidCrystal_I2C lcd(LCD_ADDRESS, 20, 4);  // LCD is 16 char x 2 lines
 
 
 // Create a software serial port called "gpsSerial"
