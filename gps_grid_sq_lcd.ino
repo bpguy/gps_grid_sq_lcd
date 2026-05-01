@@ -1,5 +1,5 @@
 // #include <LiquidCrystal.h>
-
+#include <Wire.h>
 #include <SoftwareSerial.h>
 #include <LiquidCrystal_I2C.h>
 #include <TinyGPS++.h>
@@ -29,18 +29,20 @@ void setup() {
 
   // Start the Arduino hardware serial port at 9600 baud
   Serial.begin(9600);
+  Serial.println("GPS Grid Display");
 
+  delay(5000);
   // Start the software serial port at the GPS's default baud
   gpsSerial.begin(GPSBaud);
   
   //set up LCD
-  lcd.init();
+  // lcd.init();
+  lcd.begin(16,2);
   lcd.clear();
   lcd.backlight();
   lcd.setCursor(0, 0);
   lcd.print("GPS GRID SQUARE"); //Added the word SQUARE - NX9O 2022 10 13
-  Serial.println("GPS Grid Display");
-  delay(5000);
+  
 
   Serial.println(F("Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date Alt    Course Speed Card  Chars Sentences Checksum"));
   Serial.println(F("           (deg)      (deg)       Age                      Age  (m)    --- from GPS ----  RX    RX        Fail"));
@@ -99,8 +101,18 @@ if (gps.location.isValid() )
   //lcd.setCursor(0, 0);
   // lcd.print("GRID            ");
   lcd.setCursor(0, 0); 
+  lcd.print("                ");
+  lcd.setCursor(0, 0); 
   lcd.print(grid);
+
+  lcd.setCursor(0, 1);  // sometimes, number of visible sats changes from 2 digits to 1...
+  lcd.print("                ");
+
   lcd.setCursor(0, 1);
+  if (gps.satellites.value() < 10)
+  {
+     lcd.print(" ");
+  }
   lcd.print(gps.satellites.value());
 
   lcd.setCursor(7, 0);
